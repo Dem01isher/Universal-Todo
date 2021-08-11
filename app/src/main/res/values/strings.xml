@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Universal-Tasker</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tasks">Tasks</string>
+    <string name="create_task">Create Task</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="notification_options">Notification Options</string>
+    <string name="log_out">Log out</string>
+    <string name="settings">Settings</string>
+    <string name="about_task">About Task</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_tasks">No tasks in your list!</string>
+    <string name="remove_task">Current task has been deleted</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="done">Done</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="notification">Notification</string>
+    <string name="sound">Sound</string>
+    <string name="vibration">Vibration</string>
+    <string name="reminder">Reminder</string>
+</resources>
