@@ -7,15 +7,15 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.viewbinding.ViewBinding
 import com.leskov.universal_tasker.R
-import com.leskov.universal_tasker.base.BindingFragment
+import com.leskov.universal_tasker.base.BaseBindingFragment
 import com.leskov.universal_tasker.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : BindingFragment<FragmentMainBinding>() {
+class MainFragment : BaseBindingFragment<FragmentMainBinding>() {
 
-    override val bindingInflater: (LayoutInflater) -> ViewBinding
-        get() = FragmentMainBinding::inflate
+    override val layoutId: Int
+        get() = R.layout.fragment_main
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

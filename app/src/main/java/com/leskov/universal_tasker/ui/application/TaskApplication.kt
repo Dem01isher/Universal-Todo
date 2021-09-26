@@ -8,4 +8,4 @@ import dagger.hilt.android.HiltAndroidApp
  *  Developer: Sergey Leskov
  */
 @HiltAndroidApp
-class Application : Application()
+class TaskApplication : Application()

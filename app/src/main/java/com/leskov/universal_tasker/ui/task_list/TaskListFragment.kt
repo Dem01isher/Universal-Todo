@@ -2,7 +2,7 @@ package com.leskov.universal_tasker.ui.task_list
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,22 +14,19 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.leskov.universal_tasker.R
-import com.leskov.universal_tasker.base.BindingFragment
+import com.leskov.universal_tasker.base.BaseBindingFragment
 import com.leskov.universal_tasker.databinding.FragmentTaskListBinding
-import com.leskov.universal_tasker.ui.create_task.CreateTaskDialog
 import com.leskov.universal_tasker.utils.SwipeToDeleteCallback
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import com.google.android.material.snackbar.Snackbar
 
 
 @AndroidEntryPoint
-class TaskListFragment : BindingFragment<FragmentTaskListBinding>() {
+class TaskListFragment : BaseBindingFragment<FragmentTaskListBinding>(), SearchView.OnQueryTextListener {
 
-    override val bindingInflater: (LayoutInflater) -> ViewBinding
-        get() = FragmentTaskListBinding::inflate
+    override val layoutId: Int
+        get() = R.layout.fragment_task_list
 
     private val viewModel: TaskListViewModel by viewModels()
 
@@ -43,12 +40,12 @@ class TaskListFragment : BindingFragment<FragmentTaskListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.listOfTasks.adapter = adapter
+        binding.rvTasks.adapter = adapter
 
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                val adapter = binding.listOfTasks.adapter as TaskListAdapter
+                val adapter = binding.rvTasks.adapter as TaskListAdapter
 
                 Snackbar.make(
                     requireView(),
@@ -75,20 +72,19 @@ class TaskListFragment : BindingFragment<FragmentTaskListBinding>() {
             }
         }
 
-        ItemTouchHelper(swipeHandler).attachToRecyclerView(binding.listOfTasks)
+        ItemTouchHelper(swipeHandler).attachToRecyclerView(binding.rvTasks)
 
-        binding.fab.setOnClickListener {
-            CreateTaskDialog().show(parentFragmentManager, "")
+        binding.fabAddTask.setOnClickListener {
+//            CreateTaskDialog().show(parentFragmentManager, "")
+            (parentFragment as NavHostFragment)
+                .parentFragment?.findNavController()
+                ?.navigate(R.id.action_mainFragment_to_createTaskFragment)
         }
 
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
 
                 R.id.delete_all_tasks -> deleteTask()
-
-                R.id.search -> {
-
-                }
             }
             true
         }
@@ -104,7 +100,7 @@ class TaskListFragment : BindingFragment<FragmentTaskListBinding>() {
                     adapter.submitList(null)
                 } else {
                     binding.progressBar.visibility = View.GONE
-                    binding.listIsEmpty.visibility = View.GONE
+                    binding.tvListIsEmpty.visibility = View.GONE
                     adapter.submitList(list)
                 }
             }
@@ -117,12 +113,7 @@ class TaskListFragment : BindingFragment<FragmentTaskListBinding>() {
             lifecycleScope.launchWhenResumed {
                 viewModel.deleteAllTasks()
             }
-            Snackbar.make(requireView(), "Successfully removed everything", Snackbar.LENGTH_SHORT).show()
-//            Toast.makeText(
-//                requireContext(),
-//                "Successfully removed everything",
-//                Toast.LENGTH_SHORT
-//            ).show()
+            showMessage( "Successfully removed everything")
         }
         builder.setNegativeButton("No") { _, _ -> }
         builder.setTitle("Delete everything?")
@@ -132,12 +123,21 @@ class TaskListFragment : BindingFragment<FragmentTaskListBinding>() {
 
     private fun searchDatabase(title: String) {
         lifecycleScope.launchWhenResumed {
-            viewModel.searchByName("%$title").collect { list ->
+            viewModel.searchByName("%${title.lowercase()}").collect { list ->
                 list?.let {
                     adapter.submitList(it)
                 }
             }
         }
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        searchDatabase(query.toString())
+        return false
     }
 
 }

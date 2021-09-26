@@ -21,5 +21,4 @@ class CreateTaskViewModel @Inject constructor(private val dao: TaskDao) : ViewMo
             dao.insert(vararg)
         }
 
-
 }

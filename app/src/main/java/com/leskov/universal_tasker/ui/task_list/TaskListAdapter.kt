@@ -1,18 +1,13 @@
 package com.leskov.universal_tasker.ui.task_list
 
-import android.R.attr
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.leskov.universal_tasker.R
+import com.leskov.universal_tasker.base.BaseListAdapter
+import com.leskov.universal_tasker.base.BindingHolder
 import com.leskov.universal_tasker.databinding.ListItemTaskBinding
 import com.leskov.universal_tasker.domain.models.TaskEntity
-import android.R.attr.data
-import android.R.attr.inputType
-import android.graphics.Paint
-import com.leskov.universal_tasker.base.BindingHolder
-import com.leskov.universal_tasker.databinding.ItemDateBinding
 
 
 /**
@@ -21,73 +16,23 @@ import com.leskov.universal_tasker.databinding.ItemDateBinding
  */
 
 class TaskListAdapter(private val click: (task: TaskEntity) -> Unit) :
-    ListAdapter<TaskEntity, BindingHolder<ListItemTaskBinding>>(diffCallback) {
+    BaseListAdapter<TaskEntity, ListItemTaskBinding>(diffCallback) {
 
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<*> =
-//        ViewHolder(ListItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-//        when (inputType) {
-//            1 -> {
-//                val holder =
-//                    ItemDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//                BindingHolder(holder)
-//            }
-//            2 -> {
-//                val holder =
-//                    ListItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//                BindingHolder(holder)
-//            }
-//            else -> {
-//                val holder =
-//                    ItemDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//                BindingHolder(holder)
-//            }
-//        }
-//
+    private val clickListener: (() -> Unit)? = null
 
-//    override fun onBindViewHolder(holder: BindingHolder<*>, position: Int) {
-//        when (getItemViewType(position)) {
-//            1 -> {
-//                val holderBinding = holder as BindingHolder<ItemDateBinding>
-//                holderBinding.binding.task = getItem(holder.adapterPosition)
-//            }
-//            2 -> {
-//                val holderBinding = holder as BindingHolder<ListItemTaskBinding>
-//                holderBinding.binding.task = getItem(holder.adapterPosition)
-//
-//                holder.binding.root.setOnClickListener {
-//                    click(getItem(holder.adapterPosition))
-//                }
-//            }
-//        }
-//    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): BindingHolder<ListItemTaskBinding> =
-        BindingHolder(
-            ListItemTaskBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+    override val layoutId: Int
+        get() = R.layout.list_item_task
 
     override fun onBindViewHolder(holder: BindingHolder<ListItemTaskBinding>, position: Int) {
         val item = getItem(holder.adapterPosition)
 
         holder.binding.task = item
 
-        holder.binding.done.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) holder.binding.title.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            else holder.binding.title.paintFlags = 0
-        }
 
         holder.binding.root.setOnClickListener {
             click(item)
         }
     }
-
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<TaskEntity>() {
@@ -99,6 +44,4 @@ class TaskListAdapter(private val click: (task: TaskEntity) -> Unit) :
 
         }
     }
-
-
 }

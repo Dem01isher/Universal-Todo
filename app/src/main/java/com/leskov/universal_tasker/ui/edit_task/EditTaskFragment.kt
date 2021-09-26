@@ -2,16 +2,12 @@ package com.leskov.universal_tasker.ui.edit_task
 
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.viewbinding.ViewBinding
 import com.leskov.universal_tasker.R
-import com.leskov.universal_tasker.base.BindingFragment
+import com.leskov.universal_tasker.base.BaseBindingFragment
 import com.leskov.universal_tasker.databinding.FragmentEditTaskBinding
 import com.leskov.universal_tasker.domain.models.TaskEntity
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,10 +17,10 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @AndroidEntryPoint
-class EditTaskFragment : BindingFragment<FragmentEditTaskBinding>() {
+class EditTaskFragment : BaseBindingFragment<FragmentEditTaskBinding>() {
 
-    override val bindingInflater: (LayoutInflater) -> ViewBinding
-        get() = FragmentEditTaskBinding::inflate
+    override val layoutId: Int
+        get() = R.layout.fragment_edit_task
 
     private val viewModel: EditTaskViewModel by viewModels()
 
@@ -50,10 +46,10 @@ class EditTaskFragment : BindingFragment<FragmentEditTaskBinding>() {
                         viewModel.updateTask(
                             TaskEntity(
                                 arguments?.getInt("edit_task") ?: 0,
-                                binding.title.text.toString(),
+                                binding.etTitle.text.toString(),
                                 currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
-                                binding.description.text.toString(),
-                                binding.done.isChecked
+                                binding.etDescription.text.toString(),
+                                false
                             )
                         )
                         findNavController().popBackStack()
