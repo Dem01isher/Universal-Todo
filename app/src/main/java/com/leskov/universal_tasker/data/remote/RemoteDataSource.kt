@@ -13,7 +13,7 @@ import retrofit2.http.POST
 interface RemoteDataSource {
 
     @GET("/tasks/api/todo/")
-    suspend fun getTasks() : List<TaskEntity>
+    fun getTasks() : Flow<List<TaskEntity>>
 
     @POST("/tasks/api/todo/")
     suspend fun createTask(vararg : TaskEntity)

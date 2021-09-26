@@ -1,6 +1,7 @@
 package com.leskov.universal_tasker.data.remote
 
 import com.leskov.universal_tasker.domain.models.TaskEntity
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
 
 /**
@@ -11,7 +12,7 @@ import retrofit2.Retrofit
 class RemoteDataSourceImpl(retrofit: Retrofit) : RemoteDataSource {
     private val api = retrofit.create(RemoteDataSource::class.java)
 
-    override suspend fun getTasks(): List<TaskEntity> = api.getTasks()
+    override fun getTasks(): Flow<List<TaskEntity>> = api.getTasks()
 
     override suspend fun createTask(vararg: TaskEntity) = api.createTask(vararg)
 }
