@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,41 +9,41 @@
             type="com.leskov.universal_tasker.domain.models.TaskEntity" />
     </data>
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="10dp"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{task.title}"
+                android:text="@string/title"
+                tools:text="@{task.title}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
+                app:layout_constraintVertical_bias="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_center"
-                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/done"
+            <ImageButton
+                android:id="@+id/ib_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/done"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:checked="@{task.done}"
+                android:contentDescription="@null"
+                android:background="@drawable/ic_arrow_forward"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintVertical_bias="0.5"
                 app:layout_constraintStart_toEndOf="@id/guideline_center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
