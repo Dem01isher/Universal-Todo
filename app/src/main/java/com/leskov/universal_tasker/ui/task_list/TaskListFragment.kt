@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 
 
 @AndroidEntryPoint
-class TaskListFragment : BaseBindingFragment<FragmentTaskListBinding>(), SearchView.OnQueryTextListener {
+class TaskListFragment : BaseBindingFragment<FragmentTaskListBinding>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_task_list
@@ -129,15 +129,6 @@ class TaskListFragment : BaseBindingFragment<FragmentTaskListBinding>(), SearchV
                 }
             }
         }
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    override fun onQueryTextChange(query: String?): Boolean {
-        searchDatabase(query.toString())
-        return false
     }
 
 }
