@@ -40,9 +40,4 @@ class TaskListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             dao.deleteTask(task)
         }
-
-    suspend fun insertTask(task: TaskEntity) =
-        viewModelScope.launch(Dispatchers.Main) {
-            dao.insert(task)
-        }
 }

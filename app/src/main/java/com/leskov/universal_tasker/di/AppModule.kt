@@ -6,8 +6,7 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.leskov.universal_tasker.BuildConfig
-import com.leskov.universal_tasker.data.remote.RemoteDataSource
-import com.leskov.universal_tasker.data.remote.RemoteDataSourceImpl
+import com.leskov.universal_tasker.data.remote.TaskApi
 import com.leskov.universal_tasker.data.room.TaskDao
 import com.leskov.universal_tasker.data.room.TaskDatabase
 import dagger.Module
@@ -42,7 +41,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideObjectDao(database: TaskDatabase): TaskDao =
+    fun provideTaskDao(database: TaskDatabase): TaskDao =
         database.taskDao()
 
 
@@ -58,24 +57,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteDataSource(retrofit: Retrofit): RemoteDataSource =
-        RemoteDataSourceImpl(retrofit)
+    fun provideRemoteDataSource(retrofit: Retrofit): TaskApi =
+        retrofit.create(TaskApi::class.java)
 
     @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://universal-backend.herokuapp.com/")
+            .baseUrl(TaskApi.BASE_URL)
             .client(okHttpClient)
             .build()
-
-
-    @Singleton
-    @Provides
-    fun provideApi(retrofit: Retrofit): RemoteDataSource {
-        return retrofit.create(RemoteDataSource::class.java)
-    }
 
     @Singleton
     @Provides

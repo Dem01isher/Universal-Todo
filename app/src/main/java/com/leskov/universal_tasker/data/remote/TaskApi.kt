@@ -10,10 +10,14 @@ import retrofit2.http.POST
  *  Developer: Sergey Leskov
  */
 
-interface RemoteDataSource {
+interface TaskApi {
+
+    companion object{
+        const val BASE_URL = "https://universal-backend.herokuapp.com/"
+    }
 
     @GET("/tasks/api/todo/")
-    fun getTasks() : Flow<List<TaskEntity>>
+    suspend fun getTasks() : List<TaskEntity>
 
     @POST("/tasks/api/todo/")
     suspend fun createTask(vararg : TaskEntity)
